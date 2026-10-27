@@ -1,18 +1,16 @@
 <!-- src/App.vue -->
 <template>
   <div id="app" class="app-container">
-    
-    <!-- Navbar fixa transparente no topo absoluto -->
+    <!-- 1. Navbar Fixa no Topo -->
     <Navbar />
 
-    <!-- Conteúdo principal (Hero com o vídeo a ocupar 100% do fundo) -->
+    <!-- 2. Conteúdo Central (Vídeo / Hero) -->
     <main class="main-content">
       <router-view />
     </main>
 
-    <!-- Footer fixo transparente na base absoluta -->
+    <!-- 3. Footer na Base -->
     <GlobalFooter />
-
   </div>
 </template>
 
@@ -22,7 +20,7 @@
 </script>
 
 <style>
-/* Trava a página exatamente em 100vh sem scroll e fundo totalmente preto */
+/* Trava a página inteira em 100vh sem scroll e fundo preto */
 html, body {
   margin: 0;
   padding: 0;
@@ -33,23 +31,20 @@ html, body {
 }
 
 .app-container {
-  position: relative;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100vh;
   overflow: hidden;
   background-color: #000000;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
 }
 
-/* O main ocupa 100% da tela para o vídeo servir de fundo total */
 .main-content {
-  position: absolute;
-  top: 0;
-  left: 0;
+  flex: 1;
+  position: relative;
   width: 100%;
-  height: 100vh;
-  z-index: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 </style>

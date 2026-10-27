@@ -1,8 +1,18 @@
 <!-- src/modules/home/components/HeroSection.vue -->
 <template>
   <section class="hero-section">
-    
-    <!-- VÍDEO DE FUNDO (Ocupa a tela inteira por trás da Navbar) -->
+
+    <!-- TELA DE PRELOADER DE ENTRADA AO DAR F5 -->
+     <transition name="fade">
+    <div v-if="isLoading" class="page-loader" :class="{ 'fade-out': isFadingOut }">
+      <div class="loader-bars">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+    </transition>
+    <!-- VÍDEO DE FUNDO -->
     <div class="video-background">
       <video autoplay muted loop playsinline class="hero-media">
         <source :src="homeData.localVideoUrl" type="video/mp4" />
@@ -10,9 +20,8 @@
       <div class="video-overlay"></div>
     </div>
 
-    <!-- CONTEÚDO COM PADDING NO TOPO PARA NÃO FICAR ESCONDIDO PELA NAVBAR -->
-    <div class="container position-relative z-1 px-4 d-flex flex-column align-items-end justify-content-end pb-3 me-lg-5 hero-content-box">
-      
+    <!-- CAIXA COM O TÍTULO/LOGO E O BOTÃO -->
+    <div class="hero-content-box">
       <div v-if="homeData.showLogoImage" class="hero-logo-container mb-2">
         <img :src="homeData.logoImage" :alt="homeData.logoAlt" class="hero-logo-img img-fluid" />
       </div>
@@ -20,7 +29,7 @@
         {{ homeData.title }}
       </h1>
 
-      <p class="hero-subtitle text-white-50 mb-3 fs-6 text-end">
+      <p class="hero-subtitle text-white-50 mb-3 fs-6 text-center">
         {{ homeData.subtitle }}
       </p>
       
@@ -33,8 +42,14 @@
 </template>
 
 <script setup>
+
 import { useHome } from '../composables/useHome'
+import { useIntroLoader } from '../composables/useIntroLoader'
+
+
+
 const { homeData } = useHome()
+const { isLoading, isFadingOut } = useIntroLoader(700, 600)
 </script>
 
 <style scoped>
@@ -46,12 +61,60 @@ const { homeData } = useHome()
   height: 100vh;
   background-color: #000;
   display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  padding-bottom: 4rem; /* Afasta o botão/texto do rodapé */
-  padding-right: 3rem;
   overflow: hidden;
   z-index: 1;
+}
+
+
+/* ESTILO DO PRELOADER DE ENTRADA (F5) */
+.page-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  opacity: 1;
+  transition: opacity 0.6s ease-in-out;
+}
+
+/* Classe de fade out acionada pelo Vue */
+.fade-leave-active {
+  transition: opacity 0.8s ease-in-out;
+}
+.fade-leave-to {
+  opacity: 0;
+}
+
+.loader-bars {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.loader-bars span {
+  display: inline-block;
+  width: 6px;
+  height: 28px;
+  background-color: #ffffff;
+  animation: pulseBars 0.8s infinite ease-in-out alternate;
+}
+
+.loader-bars span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loader-bars span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes pulseBars {
+  0% { transform: scaleY(0.4); opacity: 0.3; }
+  100% { transform: scaleY(1); opacity: 1; }
 }
 
 .video-background {
@@ -74,7 +137,6 @@ const { homeData } = useHome()
   width: 100%;
   height: 100%;
   transform: translate(-50%, -50%);
-  /* 'cover' garante que o vídeo preenche o fundo inteiro de ponta a ponta sem sobras pretas */
   object-fit: cover; 
 }
 
@@ -88,7 +150,20 @@ const { homeData } = useHome()
   z-index: 1;
 }
 
-.container {
+/* ========================================================================== */
+/* CONTROLO DA CAIXA: Mude o 'left' para mover para a esquerda ou direita     */
+/* ========================================================================== */
+.hero-content-box {
+  position: absolute;
+  bottom: 4rem;
+  left: 50%;                     /* <--- ALTERE AQUI: 50% (Centro), valores menores (ex: 30%) vão para a Esquerda */
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;           /* Centraliza o botão e o texto entre si */
+  text-align: center;
+  width: 100%;
+  max-width: 450px;
   z-index: 2;
 }
 
@@ -114,5 +189,35 @@ const { homeData } = useHome()
   background-color: #ffffff; 
   color: #000000;            
   border-color: #ffffff;
+}
+
+.hero-logo-container {
+  position: relative;        /* Permite mover a logo livremente */
+  top: 80px;                  /* <--- Mude aqui: valores positivos descem a logo, negativos sobem */
+  left: 0px;                 /* <--- Mude aqui: valores positivos movem para a direita, negativos para a esquerda */
+  max-width: 320px;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.hero-logo-img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.9));
+}
+
+
+@media (max-width: 992px) {
+  .hero-content-box {
+    position: absolute !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    
+    /* CONTROLO DA ALTURA NO TELEMÓVEL: */
+    bottom: auto !important;      /* Desliga o bottom antigo */
+    top: 10% !important;          /* <--- Mude aqui: 50% é o centro da tela, menos que 50% sobe, mais que 50% desce */
+  }
 }
 </style>

@@ -6,12 +6,12 @@ export const getHomeData = () => {
     youtubeVideoId: '', 
 
     // Configuração do Título vs Logótipo
-    showLogoImage: false, // true para usar imagem, false para usar texto
-    logoImage: '/logosertanejo2.png', // Caminho da imagem na pasta public (ou outro logo que preferir)
+    showLogoImage: true, // true para usar imagem, false para usar texto
+    logoImage: '/logoSertanejo2.png', // Caminho da imagem na pasta public (ou outro logo que preferir)
     logoAlt: 'Logo O Embaixador',
 
-    title: 'O EMBAIXADOR', // Mantém-se caso queira usar texto no futuro
-    subtitle: 'Acompanhe a agenda oficial e todas as novidades em destaque.',
+    title: 'Music Sertanejo', // Mantém-se caso queira usar texto no futuro
+    subtitle: '',
     buttonText: 'VER AGENDA',
     buttonUrl: '/agenda'
   }

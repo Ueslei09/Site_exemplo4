@@ -2,7 +2,7 @@
 export const getFooterData = () => {
   return {
     copyrightText: 'Todos os direitos reservados',
-    brandName: 'Balada Music',
+    brandName: 'Music Sertanejo',
     year: '2026',
     socialLabel: 'Redes Sociais:',
     socialLinks: [
