@@ -1,4 +1,4 @@
-import '@/shared/main.css'
+
 
 import { createApp } from 'vue'
 import App from './App.vue'
@@ -11,7 +11,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 // Opcional: Se precisar de componentes JavaScript do Bootstrap (como modais ou dropdowns)
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 
-
+import '@/shared/main.css'
 
 const app = createApp(App)
 

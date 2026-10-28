@@ -1,11 +1,11 @@
 <!-- src/shared/components/Navbar.vue -->
 <template>
-  <!-- Posicionado no topo, adaptando-se para fixar ou ocultar quando necessário -->
+  <!-- A Navbar escuta o estado reativo isNavbarHidden -->
   <header class="w-100 position-absolute top-0 start-0 navbar-transparent" role="banner" :class="{ 'navbar-hidden': isNavbarHidden }">
     <nav class="navbar navbar-expand-lg navbar-dark px-3 px-md-5 py-3">
       <div class="container-fluid d-flex align-items-center justify-content-between">
         
-        <!-- LOGÓTIPO: Visível tanto no mobile quanto no desktop agora! -->
+        <!-- LOGÓTIPO -->
         <router-link :to="navbarData.brand.homeUrl" class="navbar-brand text-decoration-none d-flex align-items-center custom-brand-pos">
           <img 
             v-if="navbarData.brand.logoUrl" 
@@ -13,6 +13,10 @@
             :alt="navbarData.brand.name" 
             class="navbar-logo-img"
           />
+          <!-- Se o logoUrl estiver vazio, exibe o texto da marca estilizado -->
+                  <span v-else class="text-white fw-bold fs-5 text-uppercase tracking-wider">
+                      {{ navbarData.brand.name }}
+                  </span>
         </router-link>
 
         <!-- BOTÃO MOBILE (Hambúrguer) -->
@@ -39,6 +43,7 @@
 
 <script setup>
 import { useNavbar } from '../composables/useNavbar'
+// Trazemos o isNavbarHidden de volta para o script
 const { navbarData, isScrolled, isMobileMenuOpen, toggleMobileMenu, closeMobileMenu, isNavbarHidden } = useNavbar()
 </script>
 
@@ -49,50 +54,57 @@ const { navbarData, isScrolled, isMobileMenuOpen, toggleMobileMenu, closeMobileM
   margin-top: 0px;   
 }
 
-/* 2. TAMANHO DA LOGO (Responsivo: menor no telemóvel, maior no desktop) */
+/* 2. TAMANHO DA LOGO */
 .navbar-logo-img {
-  height: 4.5rem; /* Ajustado para mobile / desktop */
+  height: 3.5rem;
   width: auto;
   object-fit: contain;
 }
 
 @media (min-width: 992px) {
   .navbar-logo-img {
-    height: 7rem; /* Tamanho original maior em telas grandes */
+    height: 7rem;
   }
   .custom-brand-pos {
     margin-left: 20px;
   }
 }
 
-/* Transparência e posicionamento da Navbar */
+/* ==========================================================
+   TRANSPARÊNCIA E COMPORTAMENTO DE ESCONDER NO SCROLL
+   ========================================================== */
 .navbar-transparent {
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0) 100%);
   backdrop-filter: blur(2px);
   position: fixed !important;
   top: 0;
   left: 0;
-  z-index: 100;
-  transition: transform 0.3s ease-in-out;
+  width: 100%;
+  z-index: 1000;
+  /* Transição suave universal para Desktop e Mobile */
+  transition: transform 0.35s ease-in-out, opacity 0.35s ease-in-out;
 }
 
-/* Comportamento inteligente para esconder a navbar no mobile ao rolar na página Sobre */
+/* AQUI ESTÁ O SEGREDO: Funciona em QUALQUER tela (Desktop e Mobile) */
+.navbar-transparent.navbar-hidden {
+  transform: translateY(-100%) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Ajustes específicos para Mobile (se necessário apenas mudar o fundo ao abrir menu) */
 @media (max-width: 992px) {
   .navbar-transparent {
-    position: fixed !important;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 10000;
-    transition: transform 0.3s ease-in-out;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 100%);
-  }
-
-  .navbar-transparent.navbar-hidden {
-    transform: translateY(-100%) !important;
-    pointer-events: none;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.8) 100%) !important;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .navbar-transparent {
+    transition: none !important;
+  }
+}
+
 /* Estilo base dos links da navegação */
 .custom-nav-link {
   color: #ffffff !important;
@@ -103,7 +115,6 @@ const { navbarData, isScrolled, isMobileMenuOpen, toggleMobileMenu, closeMobileM
   transition: color 0.3s ease;
 }
 
-/* LINHA DE INDICADOR (HR / Sublinhado) no hover */
 .custom-nav-link::after {
   content: '';
   position: absolute;

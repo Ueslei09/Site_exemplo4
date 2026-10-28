@@ -4,8 +4,8 @@
     <!-- 1. Navbar Fixa no Topo -->
     <Navbar />
 
-    <!-- 2. Conteúdo Central (Vídeo / Hero) -->
-    <main class="main-content">
+    <!-- 2. Conteúdo Central com scroll interno ativo -->
+    <main class="main-content" id="scroll-container">
       <router-view />
     </main>
 
@@ -20,13 +20,12 @@
 </script>
 
 <style>
-/* Trava a página inteira em 100vh sem scroll e fundo preto */
 html, body {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100vh;
-  overflow: hidden;
+  overflow: hidden; /* Trava o fundo da página global */
   background-color: #000000;
 }
 
@@ -43,7 +42,8 @@ html, body {
   flex: 1;
   position: relative;
   width: 100%;
-  overflow: hidden;
+  overflow-y: auto; /* <--- PERMITE Rolar APENAS o conteúdo central (como os cards) sem quebrar o layout */
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
 }

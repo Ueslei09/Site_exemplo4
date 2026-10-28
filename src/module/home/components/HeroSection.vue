@@ -155,7 +155,7 @@ const { isLoading, isFadingOut } = useIntroLoader(700, 600)
 /* ========================================================================== */
 .hero-content-box {
   position: absolute;
-  bottom: 4rem;
+  bottom: 7rem;
   left: 50%;                     /* <--- ALTERE AQUI: 50% (Centro), valores menores (ex: 30%) vão para a Esquerda */
   transform: translateX(-50%);
   display: flex;

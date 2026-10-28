@@ -6,9 +6,23 @@ export function useNavbar() {
   const navbarData = ref(getNavbarData())
   const isScrolled = ref(false)
   const isMobileMenuOpen = ref(false)
+  const isNavbarHidden = ref(false)
+  
+  let lastScrollTop = 0
 
-  const handleScroll = () => {
-    isScrolled.value = window.scrollY > 50
+  const handleScroll = (e) => {
+    // Pega o scroll direto do container de conteúdo principal
+    const currentScrollTop = e.target.scrollTop
+
+    isScrolled.value = currentScrollTop > 50
+
+    if (currentScrollTop > lastScrollTop && currentScrollTop > 60) {
+      isNavbarHidden.value = true // Esconde ao descer
+    } else {
+      isNavbarHidden.value = false // Mostra ao subir
+    }
+
+    lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop
   }
 
   const toggleMobileMenu = () => {
@@ -20,17 +34,24 @@ export function useNavbar() {
   }
 
   onMounted(() => {
-    window.addEventListener('scroll', handleScroll)
+    const container = document.getElementById('scroll-container')
+    if (container) {
+      container.addEventListener('scroll', handleScroll, { passive: true })
+    }
   })
 
   onUnmounted(() => {
-    window.removeEventListener('scroll', handleScroll)
+    const container = document.getElementById('scroll-container')
+    if (container) {
+      container.removeEventListener('scroll', handleScroll)
+    }
   })
 
   return {
     navbarData,
     isScrolled,
     isMobileMenuOpen,
+    isNavbarHidden,
     toggleMobileMenu,
     closeMobileMenu
   }

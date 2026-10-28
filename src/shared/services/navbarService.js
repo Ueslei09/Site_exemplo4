@@ -4,8 +4,8 @@
 export const getNavbarData = () => {
   return {
     brand: {
-      name: "",
-      logoUrl: "/logoSertanejo2.png", // Pode colocar o link da imagem do logo aqui se tiver
+      name: "Rock Roll",
+      logoUrl: "", // Pode colocar o link da imagem do logo aqui se tiver
       homeUrl: "/"
     },
     navLinks: [

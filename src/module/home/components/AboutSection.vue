@@ -8,8 +8,8 @@
       <div class="bg-overlay"></div>
     </div>
 
-    <!-- 2. BARRA LATERAL DE NAVEGAÇÃO -->
-    <aside class="sticky-timeline-sidebar">
+    <!-- 2. BARRA LATERAL PARA DESKTOP -->
+    <aside class="sticky-timeline-sidebar d-none d-lg-flex">
       <ul class="timeline-years-list">
         <li 
           @click="scrollToSection('bio')"
@@ -43,11 +43,34 @@
           <h5 class="year-subtitle text-white fw-normal mb-4">
             {{ bioIntro.subtitle }}
           </h5>
-          <div class="card-grid-transparent-bio">
+          <div class="card-grid-transparent-bio mb-4">
             <p class="description text-light lh-lg fs-5">
               {{ bioIntro.text }}
             </p>
           </div>
+
+          <!-- BARRA DE ANOS MOBILE: Começa no fluxo (logo abaixo da bio) e gruda no topo -->
+          <nav class="mobile-timeline-bar d-block d-lg-none">
+            <ul class="timeline-years-list-mobile">
+              <li 
+                @click="scrollToSection('bio')"
+                :class="{ active: activeYear === 'bio' }"
+                class="year-item-mob"
+              >
+                Biografia
+              </li>
+              <li 
+                v-for="item in timelineData" 
+                :key="item.year"
+                @click="scrollToSection(`year-${item.year}`)"
+                :class="{ active: activeYear === item.year }"
+                class="year-item-mob"
+              >
+                {{ item.year }}
+              </li>
+            </ul>
+          </nav>
+
         </div>
       </section>
 
@@ -142,6 +165,7 @@ useScrollSpy(activeYear, isNavbarHidden, '.year-section-item', 0.4)
   background: linear-gradient(90deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 45%, rgba(0,0,0,0.3) 100%);
 }
 
+/* DESKTOP: Barra lateral fixa à esquerda */
 .sticky-timeline-sidebar {
   position: fixed;
   left: 3rem;
@@ -263,45 +287,32 @@ useScrollSpy(activeYear, isNavbarHidden, '.year-section-item', 0.4)
   width: 100%;
 }
 
-@media (max-width: 992px) {
-  .about-page-wrapper {
-    overflow-y: auto;
-    position: relative;
-  }
 
+@media (max-width: 992px) {
   .scrollable-content-container {
     margin-left: 0;
     padding: 1rem 1rem;
   }
 
-  /* BARRA DE ANOS: Fixa de forma garantida no topo absoluto (top: 0) no telemóvel */
-  .sticky-timeline-sidebar {
+  /* BARRA DE ANOS MOBILE: Deslocada para baixo para sair por completo de trás da Navbar */
+  .mobile-timeline-bar {
+    display: block !important;
     position: fixed !important;
-    top: 0 !important;
+    top: 105px !important; /* Aumentado para descer e ficar totalmente abaixo da Navbar */
     left: 0 !important;
-    width: 100% !important;
-    transform: none !important;
-    background: rgba(0, 0, 0, 0.95) !important;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    width: 100vw !important;
+    background: #000000 !important; /* Fundo sólido opaco */
     padding: 0.8rem 1rem !important;
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    z-index: 9999 !important; /* Valor máximo para garantir que nunca fica por baixo de nada */
+    z-index: 1040 !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.9);
   }
 
-  .sidebar-title {
-    display: none !important;
-  }
-
-  .timeline-years-list {
+  .timeline-years-list-mobile {
+    list-style: none;
     display: flex !important;
     flex-direction: row !important;
-    border-left: none !important;
-    padding-left: 0 !important;
+    padding: 0 !important;
     margin: 0 !important;
     gap: 1.5rem;
     overflow-x: auto !important;
@@ -310,31 +321,27 @@ useScrollSpy(activeYear, isNavbarHidden, '.year-section-item', 0.4)
     scrollbar-width: none;
   }
 
-  .timeline-years-list::-webkit-scrollbar {
+  .timeline-years-list-mobile::-webkit-scrollbar {
     display: none;
   }
 
-  .year-item {
+  .year-item-mob {
     font-size: 1rem !important;
     white-space: nowrap !important;
     color: rgba(255, 255, 255, 0.6) !important;
     cursor: pointer;
   }
 
-  .year-item.active {
-    border-left: none !important;
-    margin-left: 0 !important;
-    padding-left: 0 !important;
+  .year-item-mob.active {
     border-bottom: 2px solid #ffc107 !important;
-    font-size: 1.1rem !important;
     color: #ffffff !important;
     font-weight: 700 !important;
   }
 
-  /* Espaçamento superior ideal para o conteúdo começar logo abaixo da barra fixa */
+  /* Espaçamento superior ajustado para o conteúdo começar limpo abaixo da barra de anos */
   .year-section-item {
     min-height: auto !important;
-    padding-top: 6rem !important;
+    padding-top: 12rem !important;
     padding-bottom: 3rem !important;
   }
 
