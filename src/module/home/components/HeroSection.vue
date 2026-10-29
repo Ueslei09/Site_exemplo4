@@ -53,15 +53,19 @@ const { isLoading, isFadingOut } = useIntroLoader(700, 600)
 </script>
 
 <style scoped>
+
+
 .hero-section {
-  position: absolute;
+  position: absolute; /* Fixa o hero cobrindo o topo perfeitamente */
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100vh;
+  width: 100vw;
+  height: 100vh; /* Altura exata */
+  margin: 0 !important;
+  padding: 0 !important;
   background-color: #000;
   display: flex;
-  overflow: hidden;
+  overflow: hidden !important; /* Corta qualquer excesso de margem/altura */
   z-index: 1;
 }
 
@@ -117,12 +121,16 @@ const { isLoading, isFadingOut } = useIntroLoader(700, 600)
   100% { transform: scaleY(1); opacity: 1; }
 }
 
+
+
 .video-background {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
+  height: 100%;
+  margin: 0;
+  padding: 0;
   pointer-events: none;
   overflow: hidden;
   z-index: 0;
@@ -132,12 +140,11 @@ const { isLoading, isFadingOut } = useIntroLoader(700, 600)
   position: absolute;
   top: 50%;
   left: 50%;
-  min-width: 100%;
-  min-height: 100%;
   width: 100%;
   height: 100%;
   transform: translate(-50%, -50%);
   object-fit: cover; 
+  display: block; 
 }
 
 .video-overlay {
@@ -217,7 +224,7 @@ const { isLoading, isFadingOut } = useIntroLoader(700, 600)
     
     /* CONTROLO DA ALTURA NO TELEMÓVEL: */
     bottom: auto !important;      /* Desliga o bottom antigo */
-    top: 10% !important;          /* <--- Mude aqui: 50% é o centro da tela, menos que 50% sobe, mais que 50% desce */
+    top: 45% !important;          /* <--- Mude aqui: 50% é o centro da tela, menos que 50% sobe, mais que 50% desce */
   }
 }
 </style>

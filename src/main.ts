@@ -11,7 +11,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 // Opcional: Se precisar de componentes JavaScript do Bootstrap (como modais ou dropdowns)
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 
-import '@/shared/main.css'
+import '@/assert/main.css'
 
 const app = createApp(App)
 

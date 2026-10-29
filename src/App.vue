@@ -20,13 +20,13 @@
 </script>
 
 <style>
+/* Garante que o container raiz gerencia o overflow de forma inteligente */
 html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  height: 100vh;
-  overflow: hidden; /* Trava o fundo da página global */
-  background-color: #000000;
+  background-color: #000;
+  overflow-x: hidden; /* Remove apenas o scroll horizontal chato das laterais */
 }
 
 .app-container {

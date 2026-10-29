@@ -13,17 +13,19 @@
 
 /* 2. Suporte estrito para HTML e Body (Trava em 100vh sem scroll e fundo preto) */
 html,
-body {
-  width: 100%;
-  height: 100vh;
+/* 2. Suporte estrito para HTML e Body (Permite scroll global, mas trava o eixo X) */
+/* Zera qualquer margem superior ou espaçamento fantasma no topo da página */
+html, body {
   margin: 0;
   padding: 0;
-  overflow: hidden;
-  background-color: #000000;
-  color: #ffffff;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  width: 100%;
+  background-color: #000;
+  overflow-x: hidden; /* Apenas corta o scroll horizontal indesejado */
+}
+
+/* Se a sua navbar estiver a criar o espaço superior */
+header, .navbar, nav {
+  margin-top: 0 !important;
 }
 
 /* 3. Normalização de imagens, vídeos e elementos gráficos */
